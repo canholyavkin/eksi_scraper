@@ -1,2 +1,0 @@
-head(iris)
-plot(iris)
