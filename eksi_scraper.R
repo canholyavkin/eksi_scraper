@@ -1,6 +1,7 @@
+# Paket Kurulumu
 library("tidyverse")
 library("rvest")
-library("ggplot2")
+library("stringr")
 options(strigsAsFactors=F)
 
 url            <- "https://eksisozluk.com/bedelli-askerlik--39846"
@@ -32,7 +33,7 @@ for (i in 1:last.page) {
 }
 
 
-# User Graph ####
+# En Çok Giriye Sahip Kullanıcılar -------------------------------------------------------------------------------------
 top_users      <- as.data.frame(table(user.list)) %>% arrange(-Freq) %>% head(10)
 
 ggplot(data = top_users, aes(x=reorder(user.list,-Freq), y=Freq, fill=Freq)) +
@@ -47,7 +48,7 @@ ggplot(data = top_users, aes(x=reorder(user.list,-Freq), y=Freq, fill=Freq)) +
   )
 
 
-# Timeline Graph ####
+# Tarihe Bağlı Histogram-----------------------------------------------------------------------------------------------
 
 timeline       <- as.data.frame(matrix(ncol=1, nrow = length(time.list)))
 timeline$V1    <- as.Date(gsub( " .*$", "", time.list ), format = "%d.%m.%Y")
@@ -86,7 +87,7 @@ ggplot(data = timeline2) +
   geom_histogram(aes(x=V1, fill=..density..), bins = 720)
 
 
-# Word Graph ####
+# Kelime Yoğunluğu -----------------------------------------------------------------------------------------------------
 
 removed.words  <- c("da","ve","de","bu","gibi","ise","ya",";",",","",
                     "artık","diye","\r\n    ","\r\n  ","---","daha","ama",
@@ -111,8 +112,3 @@ ggplot(data = top_words, aes(x=reorder(.,-Freq), y=Freq, fill=Freq)) +
     x= "",
     y= "Kullanım Sayısı"
   )
-
-
-
-
-
