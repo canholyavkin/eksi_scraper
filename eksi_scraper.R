@@ -1,18 +1,20 @@
-# Paket Kurulumu
+# Paket Kurulumu -------------------------------------------------------------------------------------------------------
 library("tidyverse")
 library("rvest")
 library("stringr")
-options(strigsAsFactors=F)
 
-url            <- "https://eksisozluk.com/bedelli-askerlik--39846"
+# Veri Çekilmesi -------------------------------------------------------------------------------------------------------
+# Verilerin alınacağı başlık bağlantısı başlık id'si ile bitmelidir. Bağlantı içinde sayfa sayısını belirten 
+# parametreler ("?p=1" gibi) olmamaldır.
+
+url            <- "https://eksisozluk.com/teyitorg--5292793"
+
 last.page      <- read_html(url) %>% html_node(".pager") %>% html_attr("data-pagecount") %>% as.numeric()
 title          <- read_html(url) %>% html_nodes("h1")  %>% html_attr("data-title")
 
 user.list      <- vector()
 time.list      <- vector()
 entry.list     <- vector()
-
-removed.string <- c("\r\n    ","\r\n  ")
 
 for (i in 1:last.page) {
   current.page <- paste0(url,"?p=",i)
@@ -21,11 +23,10 @@ for (i in 1:last.page) {
   entry.list   <- append(entry.list, read_html(current.page) %>% 
                            html_nodes(".content") %>% 
                            html_text() %>% 
-                           str_replace_all(removed.string,"") %>%
                            str_trim() %>%
                            str_split(" ") %>% 
                            unlist())
-  
+  # Yüklenme Sayacı
   if(i %% 10==0) {
     cat("\014")
     print(paste0("Çekilen Veri: % ",format(round(i/last.page*100, 2), nsmall = 2)))
