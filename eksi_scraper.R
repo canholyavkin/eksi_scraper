@@ -7,7 +7,7 @@ library("stringr")
 # Verilerin alınacağı başlık bağlantısı başlık id'si ile bitmelidir. Bağlantı içinde sayfa sayısını belirten 
 # parametreler ("?p=1" gibi) olmamaldır.
 
-url            <- "https://eksisozluk.com/teyitorg--5292793"
+url            <- "https://eksisozluk.com/dolar-artarken-isyerlerinin-son-durumu--5754648"
 
 last.page      <- read_html(url) %>% html_node(".pager") %>% html_attr("data-pagecount") %>% as.numeric()
 title          <- read_html(url) %>% html_nodes("h1")  %>% html_attr("data-title")
